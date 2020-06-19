@@ -188,11 +188,13 @@
     <project.scm.repository>Activiti</project.scm.repository>
     <project.year>2020</project.year>
 
-    <java.release>11</java.release>
-    <java.version>1.${java.release}</java.version>
-    <maven.compiler.release>${java.release}</maven.compiler.release>
-    <maven.compiler.source>${java.version}</maven.compiler.source>
-    <maven.compiler.target>${java.version}</maven.compiler.target>
+<!--    <java.release>8</java.release>-->
+<!--  只有结合spring项目一起使用才生效  -->
+<!--    <java.version>1.${java.release}</java.version>-->
+<!--   release 是JDK1.9版本才支持的配置，他的含义代表：-target,-source,bootclasspath -->
+<!--    <maven.compiler.release>${java.release}</maven.compiler.release>-->
+<!--    <maven.compiler.source>${java.version}</maven.compiler.source>-->
+<!--    <maven.compiler.target>${java.version}</maven.compiler.target>-->
 
     <!-- versions -->
     <asm.version>7.0</asm.version>
@@ -468,6 +470,9 @@
           <showDeprecation>true</showDeprecation>
           <showWarnings>true</showWarnings>
           <optimize>true</optimize>
+          <target>1.8</target>
+          <source>1.8</source>
+          <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
       <plugin>
