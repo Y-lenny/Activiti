@@ -195,7 +195,7 @@
 <!--    <maven.compiler.release>${java.release}</maven.compiler.release>-->
 <!--    <maven.compiler.source>${java.version}</maven.compiler.source>-->
 <!--    <maven.compiler.target>${java.version}</maven.compiler.target>-->
-
+<!--参考链接：http://www.linuxcoming.com/blog/2019/08/21/maven_java_version.html-->
     <!-- versions -->
     <asm.version>7.0</asm.version>
     <awaitility.version>4.0.2</awaitility.version>

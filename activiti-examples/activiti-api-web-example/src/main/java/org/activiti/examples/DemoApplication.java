@@ -25,6 +25,7 @@ import org.activiti.api.process.model.builders.ProcessPayloadBuilder;
 import org.activiti.api.process.runtime.ProcessRuntime;
 import org.activiti.api.process.runtime.connector.Connector;
 import org.activiti.api.runtime.shared.query.Pageable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -40,6 +41,9 @@ public class DemoApplication implements CommandLineRunner {
 
     private ProcessRuntime processRuntime;
 
+    @Autowired
+    private SecurityUtil securityUtil;
+
     public DemoApplication(ProcessRuntime processRuntime) {
         this.processRuntime = processRuntime;
     }
@@ -52,6 +56,7 @@ public class DemoApplication implements CommandLineRunner {
     @PostMapping("/documents")
     public String processFile(@RequestBody String content) {
 
+        securityUtil.logInAs("bob");
         ProcessInstance processInstance = processRuntime.start(ProcessPayloadBuilder
                                                                        .start()
                                                                        .withProcessDefinitionKey("categorizeProcess")
@@ -65,6 +70,7 @@ public class DemoApplication implements CommandLineRunner {
 
     @GetMapping("/process-definitions")
     public List<ProcessDefinition> getProcessDefinition(){
+        securityUtil.logInAs("bob");
         return processRuntime.processDefinitions(Pageable.of(0, 100)).getContent();
     }
 
