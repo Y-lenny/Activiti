@@ -1,9 +1,9 @@
 /* Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,8 +26,9 @@ import org.activiti.engine.repository.ProcessDefinition;
 /**
  * A utility class that hides the complexity of {@link ProcessDefinitionEntity} and {@link Process} lookup. Use this class rather than accessing the process definition cache or
  * {@link DeploymentManager} directly.
- * 
-
+ *
+ * 这个工具类隐藏了复杂的ProcessDefinitionEntity与Process转化的内容，使用这个类不需要关注访问的是缓存还是直接查库的细节
+ *
  */
 public class ProcessDefinitionUtil {
 
@@ -43,7 +44,7 @@ public class ProcessDefinitionUtil {
         return cacheEntry.getProcessDefinition();
       }
       return null;
-      
+
     } else {
       // This will check the cache in the findDeployedProcessDefinitionById method
       return processEngineConfiguration.getDeploymentManager().findDeployedProcessDefinitionById(processDefinitionId);
@@ -65,7 +66,7 @@ public class ProcessDefinitionUtil {
     ProcessDefinition processDefinitionEntity = deploymentManager.findDeployedProcessDefinitionById(processDefinitionId);
     return deploymentManager.resolveProcessDefinition(processDefinitionEntity).getBpmnModel();
   }
-  
+
   public static BpmnModel getBpmnModelFromCache(String processDefinitionId) {
     ProcessDefinitionCacheEntry cacheEntry = Context.getProcessEngineConfiguration().getProcessDefinitionCache().get(processDefinitionId);
     if (cacheEntry != null) {
@@ -73,19 +74,19 @@ public class ProcessDefinitionUtil {
     }
     return null;
   }
-  
+
   public static boolean isProcessDefinitionSuspended(String processDefinitionId) {
     ProcessDefinitionEntity processDefinition = getProcessDefinitionFromDatabase(processDefinitionId);
     return processDefinition.isSuspended();
   }
-  
+
   public static ProcessDefinitionEntity getProcessDefinitionFromDatabase(String processDefinitionId) {
     ProcessDefinitionEntityManager processDefinitionEntityManager = Context.getProcessEngineConfiguration().getProcessDefinitionEntityManager();
     ProcessDefinitionEntity processDefinition = processDefinitionEntityManager.findById(processDefinitionId);
     if (processDefinition == null) {
       throw new ActivitiException("No process definition found with id " + processDefinitionId);
     }
-    
+
     return processDefinition;
   }
 }

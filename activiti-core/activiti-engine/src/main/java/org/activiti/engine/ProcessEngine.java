@@ -18,6 +18,8 @@ import org.activiti.engine.api.internal.Internal;
 /**
  * Provides access to all the services that expose the BPM and workflow operations.
  *
+ * 对外提供了访问BPM和工作流操作的业务实现
+ *
  * <ul>
  * <li>
  * <b>{@link org.activiti.engine.RuntimeService}: </b> Allows the creation of {@link org.activiti.engine.repository.Deployment}s and the starting of and searching on

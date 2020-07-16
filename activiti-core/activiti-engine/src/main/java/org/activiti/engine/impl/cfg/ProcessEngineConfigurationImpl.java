@@ -326,7 +326,9 @@ import org.apache.ibatis.type.JdbcType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+/**
+ * 工作流引擎配置、对象工厂
+ */
 public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
   private static Logger log = LoggerFactory.getLogger(ProcessEngineConfigurationImpl.class);
@@ -342,6 +344,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   public static final int DEFAULT_ORACLE_MAX_LENGTH_STRING= 2000;
 
   // SERVICES /////////////////////////////////////////////////////////////////
+  // 工作流引擎各个阶段：流程定义、部署、运行、任务、历史等等业务实现类
 
   protected RepositoryService repositoryService = new RepositoryServiceImpl();
   protected RuntimeService runtimeService = new RuntimeServiceImpl();
@@ -361,6 +364,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   /**
    * the configurable list which will be {@link #initInterceptorChain(java.util.List) processed} to build the {@link #commandExecutor}
+   *
    */
   protected List<CommandInterceptor> customPreCommandInterceptors;
   protected List<CommandInterceptor> customPostCommandInterceptors;
@@ -371,6 +375,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   protected CommandExecutor commandExecutor;
 
   // DATA MANAGERS /////////////////////////////////////////////////////////////
+  // 工作流产生的数据管理类
 
   protected AttachmentDataManager attachmentDataManager;
   protected ByteArrayDataManager byteArrayDataManager;
@@ -401,6 +406,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
 
   // ENTITY MANAGERS ///////////////////////////////////////////////////////////
+  // 工作流实体映射管理类
 
   protected AttachmentEntityManager attachmentEntityManager;
   protected ByteArrayEntityManager byteArrayEntityManager;
@@ -487,6 +493,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   /**
    * The number of retries for a job.
+   * 任务重试次数
    */
   protected int asyncExecutorNumberOfRetries = 3;
 
@@ -494,6 +501,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    * The minimal number of threads that are kept alive in the threadpool for job
    * execution. Default value = 2. (This property is only applicable when using
    * the {@link DefaultAsyncJobExecutor}).
+   * 任务执行线程池最小保留存活线程数量，默认为2（这个属性仅适用于{@link DefaultAsyncJobExecutor} ）
    */
   protected int asyncExecutorCorePoolSize = 2;
 
@@ -501,6 +509,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    * The maximum number of threads that are created in the threadpool for job
    * execution. Default value = 10. (This property is only applicable when using
    * the {@link DefaultAsyncJobExecutor}).
+   * 同上同理
    */
   protected int asyncExecutorMaxPoolSize = 10;
 
@@ -513,6 +522,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    *
    * (This property is only applicable when using the
    * {@link DefaultAsyncJobExecutor}).
+   * 同上同理
    */
   protected long asyncExecutorThreadKeepAliveTime = 5000L;
 
@@ -520,6 +530,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    * The size of the queue on which jobs to be executed are placed, before they
    * are actually executed. Default value = 100. (This property is only
    * applicable when using the {@link DefaultAsyncJobExecutor}).
+   * 同上同理
    */
   protected int asyncExecutorThreadPoolQueueSize = 100;
 
@@ -535,6 +546,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    *
    * (This property is only applicable when using the
    * {@link DefaultAsyncJobExecutor}).
+   * 同上同理
    */
   protected BlockingQueue<Runnable> asyncExecutorThreadPoolQueue;
 
@@ -545,6 +557,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    *
    * (This property is only applicable when using the
    * {@link DefaultAsyncJobExecutor}).
+   *
    */
   protected long asyncExecutorSecondsToWaitOnShutdown = 60L;
 
@@ -680,6 +693,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   protected ExecuteAsyncRunnableFactory asyncExecutorExecuteAsyncRunnableFactory;
 
   // MYBATIS SQL SESSION FACTORY //////////////////////////////////////////////
+  // mybatis sql 会话工厂
 
   protected SqlSessionFactory sqlSessionFactory;
   protected TransactionFactory transactionFactory;
@@ -688,6 +702,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   protected Set<String> customMybatisXMLMappers;
 
   // ID GENERATOR ///////////////////////////////////////////////////////////////
+  // id 生成器
 
   protected IdGenerator idGenerator;
   protected DataSource idGeneratorDataSource;
@@ -768,9 +783,15 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    * The following settings will determine the amount of entities loaded at once when the engine needs to load multiple entities (eg. when suspending a process definition with all its process
    * instances).
    *
+   * todo-lyw 2020/07/10 22:00:00  reader line
+   *
    * The default setting is quite low, as not to surprise anyone with sudden memory spikes. Change it to something higher if the environment Activiti runs in allows it.
+   * 这个默认设置是十分低的，为了避免由于突然内存激增引起问题；假如环境允许的情况下是可以适当的调大点。
    */
   protected int batchSizeProcessInstances = 25;
+  /**
+   *
+   */
   protected int batchSizeTasks = 25;
 
   protected boolean enableEventDispatcher = true;
@@ -842,6 +863,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   // buildProcessEngine
   // ///////////////////////////////////////////////////////
+  // 构建工作流引擎
 
   @Override
   public ProcessEngine buildProcessEngine() {
@@ -854,6 +876,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   // init
   // /////////////////////////////////////////////////////////////////////
+  // 初始化
 
   public void init() {
     initConfigurators();
@@ -1005,6 +1028,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   // services
   // /////////////////////////////////////////////////////////////////
+  // 初始化服务类
 
   public void initServices() {
     initService(repositoryService);
@@ -1023,6 +1047,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   // DataSource
   // ///////////////////////////////////////////////////////////////
+  // 初始化数据源
 
   public void initDataSource() {
     if (dataSource == null) {
@@ -1157,6 +1182,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   // myBatis SqlSessionFactory
   // ////////////////////////////////////////////////
 
+    /**
+     * 初始化myBatis 事务工厂
+     */
   public void initTransactionFactory() {
     if (transactionFactory == null) {
       if (transactionsExternallyManaged) {
@@ -1167,6 +1195,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     }
   }
 
+    /**
+     * 初始化myBatis 会话工厂
+     */
   public void initSqlSessionFactory() {
     if (sqlSessionFactory == null) {
       InputStream inputStream = null;
@@ -1275,6 +1306,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   }
 
   // Data managers ///////////////////////////////////////////////////////////
+  // 数据管理类
 
   public void initDataManagers() {
     if (attachmentDataManager == null) {
@@ -1447,7 +1479,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   }
 
   // Job manager ///////////////////////////////////////////////////////////
-
+  // 任务管理器
    public void initJobManager() {
      if (jobManager == null) {
        jobManager = new DefaultJobManager(this);
@@ -1457,6 +1489,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    }
 
   // session factories ////////////////////////////////////////////////////////
+  //  session 工厂
 
   public void initSessionFactories() {
     if (sessionFactories == null) {
@@ -1465,7 +1498,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
       if (usingRelationalDatabase) {
         initDbSqlSessionFactory();
       }
-
+        /**
+         * 对象session工厂
+          */
       addSessionFactory(new GenericManagerFactory(EntityCache.class, EntityCacheImpl.class));
     }
 
@@ -1476,6 +1511,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     }
   }
 
+    /**
+     * 初始化 sql session 工厂
+     */
   public void initDbSqlSessionFactory() {
     if (dbSqlSessionFactory == null) {
       dbSqlSessionFactory = createDbSqlSessionFactory();
@@ -1501,6 +1539,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     sessionFactories.put(sessionFactory.getSessionType(), sessionFactory);
   }
 
+    /**
+     * 初始化配置者
+     */
   public void initConfigurators() {
 
     allConfigurators = new ArrayList<ProcessEngineConfigurator>();
@@ -1560,13 +1601,18 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     }
   }
 
+    /**
+     * 配置者初始化前的动作
+     */
   public void configuratorsBeforeInit() {
     for (ProcessEngineConfigurator configurator : allConfigurators) {
       log.info("Executing beforeInit() of {} (priority:{})", configurator.getClass(), configurator.getPriority());
       configurator.beforeInit(this);
     }
   }
-
+    /**
+     * 配置者初始化后的动作
+     */
   public void configuratorsAfterInit() {
     for (ProcessEngineConfigurator configurator : allConfigurators) {
       log.info("Executing configure() of {} (priority:{})", configurator.getClass(), configurator.getPriority());
@@ -1576,6 +1622,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   // deployers
   // ////////////////////////////////////////////////////////////////
+  // 初始化
 
   public void initProcessDefinitionCache() {
     if (processDefinitionCache == null) {
@@ -1843,7 +1890,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   // async executor
   // /////////////////////////////////////////////////////////////
-
+  // 异步执行器
   public void initAsyncExecutor() {
     if (asyncExecutor == null) {
       DefaultAsyncJobExecutor defaultAsyncExecutor = new DefaultAsyncJobExecutor();
@@ -1866,6 +1913,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   // id generator
   // /////////////////////////////////////////////////////////////
+  // 初始化id生成器
 
   public void initIdGenerator() {
     if (idGenerator == null) {

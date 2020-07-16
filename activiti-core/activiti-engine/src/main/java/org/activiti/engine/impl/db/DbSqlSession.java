@@ -67,6 +67,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * activities session会话：包装mybatis session会话
+ * 装饰者模式
+ */
 public class DbSqlSession implements Session {
 
     private static final Logger log = LoggerFactory.getLogger(DbSqlSession.class);
@@ -140,8 +144,17 @@ public class DbSqlSession implements Session {
         ACTIVITI_VERSIONS.add(new ActivitiVersion(ProcessEngine.VERSION));
     }
 
+    /**
+     * mybatis session 会话
+     */
     protected SqlSession sqlSession;
+    /**
+     * acticities session 工厂
+     */
     protected DbSqlSessionFactory dbSqlSessionFactory;
+    /**
+     * 实体缓存
+     */
     protected EntityCache entityCache;
 
     protected Map<Class<? extends Entity>, Map<String, Entity>> insertedObjects
@@ -177,7 +190,7 @@ public class DbSqlSession implements Session {
     }
 
     // insert ///////////////////////////////////////////////////////////////////
-
+    // 插入
     public void insert(Entity entity) {
         if (entity.getId() == null) {
             String id = dbSqlSessionFactory.getIdGenerator().getNextId();
@@ -199,7 +212,7 @@ public class DbSqlSession implements Session {
 
     // update
     // ///////////////////////////////////////////////////////////////////
-
+    // 更新
     public void update(Entity entity) {
         entityCache.put(entity,
                         false); // false -> we don't store state, meaning it will always be seen as changed
@@ -215,7 +228,7 @@ public class DbSqlSession implements Session {
 
     // delete
     // ///////////////////////////////////////////////////////////////////
-
+    // 删除
     /**
      * Executes a {@link BulkDeleteOperation}, with the sql in the statement parameter.
      * The passed class determines when this operation will be executed: it will be executed
@@ -245,7 +258,7 @@ public class DbSqlSession implements Session {
 
     // select
     // ///////////////////////////////////////////////////////////////////
-
+    // 查询
     @SuppressWarnings({"rawtypes"})
     public List selectList(String statement) {
         return selectList(statement,
@@ -471,6 +484,7 @@ public class DbSqlSession implements Session {
     }
 
     // internal session cache
+    // 内部session缓存处理
     // ///////////////////////////////////////////////////
 
     @SuppressWarnings("rawtypes")
@@ -507,6 +521,7 @@ public class DbSqlSession implements Session {
 
     // flush
     // ////////////////////////////////////////////////////////////////////
+    // 刷新缓存数据到数据库
 
     public void flush() {
         determineUpdatedObjects(); // Needs to be done before the removeUnnecessaryOperations, as removeUnnecessaryOperations will remove stuff from the cache
@@ -524,6 +539,7 @@ public class DbSqlSession implements Session {
     /**
      * Clears all deleted and inserted objects from the cache,
      * and removes inserts and deletes that cancel each other.
+     *  从缓存中清理掉即有删除又有插入的对象，因为相互抵消彼此。
      * <p>
      * Also removes deletes with duplicate ids.
      */
@@ -577,6 +593,9 @@ public class DbSqlSession implements Session {
         }
     }
 
+    /**
+     * 开启debug日志打印
+     */
     protected void debugFlush() {
         log.debug("Flushing dbSqlSession");
         int nrOfInserts = 0, nrOfUpdates = 0, nrOfDeletes = 0;
@@ -624,6 +643,9 @@ public class DbSqlSession implements Session {
                 && deletedObjects.get(entity.getClass()).containsKey(entity.getId());
     }
 
+    /**
+     *    刷新插入缓存数据到数据库
+     */
     protected void flushInserts() {
 
         if (insertedObjects.size() == 0) {
@@ -769,6 +791,9 @@ public class DbSqlSession implements Session {
 
     protected void flushRegularInsert(Entity entity,
                                       Class<? extends Entity> clazz) {
+        /**
+         * 映射插入声明式SQL语句
+         */
         String insertStatement = dbSqlSessionFactory.getInsertStatement(entity);
         insertStatement = dbSqlSessionFactory.mapStatement(insertStatement);
 

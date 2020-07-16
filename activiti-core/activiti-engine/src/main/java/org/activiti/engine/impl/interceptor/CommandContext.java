@@ -62,22 +62,52 @@ import org.activiti.engine.logging.LogMDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 执行命令的上下文封装
+ */
 public class CommandContext {
 
     private static Logger log = LoggerFactory.getLogger(CommandContext.class);
 
+    /**
+     * 执行命令
+     */
     protected Command<?> command;
+    /**
+     * session工厂
+     */
     protected Map<Class<?>, SessionFactory> sessionFactories;
+    /**
+     * ？
+     */
     protected Map<Class<?>, Session> sessions = new HashMap<>();
     protected Throwable exception;
+    /**
+     * 工作流引擎配置、对象工厂
+     */
     protected ProcessEngineConfigurationImpl processEngineConfiguration;
+    /**
+     * ？
+     */
     protected FailedJobCommandFactory failedJobCommandFactory;
+    /**
+     * ？
+     */
     protected List<CommandContextCloseListener> closeListeners;
+    /**
+     * ？
+     */
     protected Map<String, Object> attributes; // General-purpose storing of anything during the lifetime of a command context
     protected boolean reused;
 
+    /**
+     * ？
+     */
     protected ActivitiEngineAgenda agenda;
     protected Map<String, ExecutionEntity> involvedExecutions = new HashMap<>(1); // The executions involved with the command
+    /**
+     * ？
+     */
     protected LinkedList<Object> resultStack = new LinkedList<>(); // needs to be a stack, as JavaDelegates can do api calls again
 
     public CommandContext(Command<?> command,
@@ -232,6 +262,9 @@ public class CommandContext {
         }
     }
 
+    /**
+     * session持久化
+     */
     protected void flushSessions() {
         for (Session session : sessions.values()) {
             session.flush();

@@ -1,9 +1,9 @@
 /* Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,28 +16,28 @@ import org.activiti.engine.impl.db.HasRevision;
 
 /**
  * Abstract superclass for the common properties of all {@link Entity} implementations.
- * 
-
+ *
+ * 抽象父类：实现公共属性的接口
  */
 public abstract class AbstractEntity implements Entity, HasRevision {
 
   protected String id;
   protected int revision = 1;
-  
+
   protected boolean isInserted;
   protected boolean isUpdated;
   protected boolean isDeleted;
-  
+
   @Override
   public String getId() {
     return id;
   }
-  
+
   @Override
   public void setId(String id) {
     this.id = id;
   }
-  
+
   public int getRevisionNext() {
     return revision + 1;
   }
@@ -73,5 +73,5 @@ public abstract class AbstractEntity implements Entity, HasRevision {
   public void setDeleted(boolean isDeleted) {
     this.isDeleted = isDeleted;
   }
-  
+
 }

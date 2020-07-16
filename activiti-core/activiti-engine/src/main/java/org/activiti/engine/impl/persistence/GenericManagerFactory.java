@@ -1,9 +1,9 @@
 /* Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,14 +19,13 @@ import org.activiti.engine.impl.interceptor.Session;
 import org.activiti.engine.impl.interceptor.SessionFactory;
 
 /**
-
-
+ * 类型管理器工厂 对应  抽象管理器（AbstractManager）
  */
 public class GenericManagerFactory implements SessionFactory {
 
   protected Class<? extends Session> typeClass;
   protected Class<? extends Session> implementationClass;
-  
+
   public GenericManagerFactory(Class<? extends Session> typeClass, Class<? extends Session> implementationClass) {
     this.typeClass = typeClass;
     this.implementationClass = implementationClass;

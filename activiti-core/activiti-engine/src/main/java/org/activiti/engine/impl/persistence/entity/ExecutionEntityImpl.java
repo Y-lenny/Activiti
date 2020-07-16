@@ -31,11 +31,15 @@ import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.impl.persistence.CountingExecutionEntity;
 import org.activiti.engine.impl.util.ProcessDefinitionUtil;
 
+/**
+ * 执行器实体的封装
+ */
 public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionEntity, CountingExecutionEntity {
 
   private static final long serialVersionUID = 1L;
 
   // current position /////////////////////////////////////////////////////////
+  // 当前位置-记录当前执行的内容（元素、监听器、）
 
   protected FlowElement currentFlowElement;
   protected ActivitiListener currentActivitiListener; // Only set when executing an execution listener
@@ -112,6 +116,7 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
 
   /**
    * persisted reference to the processDefinition.
+   * 持久化流程定义id
    *
    * @see #processDefinition
    * @see #setProcessDefinition(ProcessDefinitionImpl)
@@ -121,26 +126,31 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
 
   /**
    * persisted reference to the process definition key.
+   * 持久化流程定义键
    */
   protected String processDefinitionKey;
 
   /**
    * persisted reference to the process definition name.
+   * 持久化流程定义名称
    */
   protected String processDefinitionName;
 
   /**
    * persisted reference to the process definition version.
+   * 持久化流程定义版本
    */
   protected Integer processDefinitionVersion;
 
   /**
    * persisted reference to the deployment id.
+   * 持久化部署id
    */
   protected String deploymentId;
 
   /**
    * persisted reference to the current position in the diagram within the {@link #processDefinition}.
+   * 持久化节点id
    *
    * @see #activity
    * @see #setActivity(ActivityImpl)
@@ -150,11 +160,13 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
 
   /**
    * The name of the current activity position
+   * 持久化节点名称
    */
   protected String activityName;
 
   /**
    * persisted reference to the process instance.
+   * 持久化流程实例id
    *
    * @see #getProcessInstance()
    */
@@ -162,6 +174,7 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
 
   /**
    * persisted reference to the business key.
+   * 持久化业务键
    */
   protected String businessKey;
 
@@ -252,6 +265,10 @@ public class ExecutionEntityImpl extends VariableScopeImpl implements ExecutionE
 
   // The current flow element, will be filled during operation execution
 
+    /**
+     * 获取当前流程元素
+     * @return
+     */
   public FlowElement getCurrentFlowElement() {
     if (currentFlowElement == null) {
       String processDefinitionId = getProcessDefinitionId();
