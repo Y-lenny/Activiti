@@ -21,8 +21,6 @@ import org.activiti.bpmn.model.FlowElement;
 /**
  * Execution used in {@link JavaDelegate}s and {@link ExecutionListener}s.
  *
-
-
  */
 public interface DelegateExecution extends VariableScope {
 

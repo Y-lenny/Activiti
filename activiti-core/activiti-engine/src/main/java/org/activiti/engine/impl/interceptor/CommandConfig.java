@@ -6,7 +6,7 @@ import org.activiti.engine.impl.cfg.TransactionPropagation;
  * Configuration settings for the command interceptor chain.
  *
  * Instances of this class are immutable, and thus thread- and share-safe.
- * 这个类被初始化后就是线程安全的（没有getter/setter方法）
+ * 这个类被初始化后就是线程安全的
  *
  */
 public class CommandConfig {

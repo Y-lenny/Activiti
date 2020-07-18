@@ -1,9 +1,9 @@
 /* Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,8 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
-
-
+ * 默认的异步任务执行器
  */
 public class DefaultAsyncJobExecutor implements AsyncExecutor {
 
@@ -71,11 +70,11 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
   protected Thread timerJobAcquisitionThread;
   protected Thread asyncJobAcquisitionThread;
   protected Thread resetExpiredJobThread;
-  
+
   protected AcquireTimerJobsRunnable timerJobRunnable;
   protected AcquireAsyncJobsDueRunnable asyncJobsDueRunnable;
   protected ResetExpiredJobsRunnable resetExpiredJobsRunnable;
-  
+
   protected ExecuteAsyncRunnableFactory executeAsyncRunnableFactory;
 
   protected boolean isAutoActivate;
@@ -86,52 +85,58 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
   protected int maxAsyncJobsDuePerAcquisition = 1;
   protected int defaultTimerJobAcquireWaitTimeInMillis = 10 * 1000;
   protected int defaultAsyncJobAcquireWaitTimeInMillis = 10 * 1000;
-  protected int defaultQueueSizeFullWaitTime = 0; 
+  protected int defaultQueueSizeFullWaitTime = 0;
 
   protected String lockOwner = UUID.randomUUID().toString();
   protected int timerLockTimeInMillis = 5 * 60 * 1000;
   protected int asyncJobLockTimeInMillis = 5 * 60 * 1000;
   protected int retryWaitTimeInMillis = 500;
-  
+
   protected int resetExpiredJobsInterval = 60 * 1000;
   protected int resetExpiredJobsPageSize = 3;
-  
+
   // Job queue used when async executor is not yet started and jobs are already added.
   // This is mainly used for testing purpose.
   protected LinkedList<Job> temporaryJobQueue = new LinkedList<Job>();
-  
+
   protected ProcessEngineConfigurationImpl processEngineConfiguration;
 
   public boolean executeAsyncJob(final Job job) {
-    
+
     if (isMessageQueueMode) {
       // When running with a message queue based job executor,
       // the job is not executed here.
       return true;
     }
-    
+
     Runnable runnable = null;
+      /**
+       * 当执行器是运行状态，把任务进行封装成runnable对象。
+       */
     if (isActive) {
       runnable = createRunnableForJob(job);
-      
+
       try {
+          /**
+           * 执行
+           */
         executorService.execute(runnable);
       } catch (RejectedExecutionException e) {
-        
-        // When a RejectedExecutionException is caught, this means that the queue for holding the jobs 
+
+        // When a RejectedExecutionException is caught, this means that the queue for holding the jobs
         // that are to be executed is full and can't store more.
         // The job is now 'unlocked', meaning that the lock owner/time is set to null,
-        // so other executors can pick the job up (or this async executor, the next time the 
+        // so other executors can pick the job up (or this async executor, the next time the
         // acquire query is executed.
-        
+
         // This can happen while already in a command context (for example in a transaction listener
         // after the async executor has been hinted that a new async job is created)
         // or not (when executed in the acquire thread runnable)
-        
+
         CommandContext commandContext = Context.getCommandContext();
         if (commandContext != null) {
           commandContext.getJobManager().unacquire(job);
-          
+
         } else {
           processEngineConfiguration.getCommandExecutor().execute(new Command<Void>() {
             public Void execute(CommandContext commandContext) {
@@ -140,15 +145,15 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
             }
           });
         }
-        
+
         // Job queue full, returning true so (if wanted) the acquiring can be throttled
         return false;
       }
-      
+
     } else {
       temporaryJobQueue.add(job);
     }
-    
+
     return true;
   }
 
@@ -159,7 +164,7 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
       return executeAsyncRunnableFactory.createExecuteAsyncRunnable(job, processEngineConfiguration);
     }
   }
-  
+
   /** Starts the async executor */
   public void start() {
     if (isActive) {
@@ -167,24 +172,24 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
     }
 
     log.info("Starting up the default async job executor [{}].", getClass().getName());
-    
+
     if (timerJobRunnable == null) {
       timerJobRunnable = new AcquireTimerJobsRunnable(this, processEngineConfiguration.getJobManager());
     }
-    
+
     if (resetExpiredJobsRunnable == null) {
       resetExpiredJobsRunnable = new ResetExpiredJobsRunnable(this);
     }
-    
+
     if (!isMessageQueueMode && asyncJobsDueRunnable == null) {
       asyncJobsDueRunnable = new AcquireAsyncJobsDueRunnable(this);
     }
-    
+
     if (!isMessageQueueMode) {
       initAsyncJobExecutionThreadPool();
       startJobAcquisitionThread();
     }
-    
+
     startTimerAcquisitionThread();
     startResetExpiredJobsThread();
 
@@ -206,7 +211,7 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
       return;
     }
     log.info("Shutting down the default async job executor [{}].", getClass().getName());
-    
+
     if (timerJobRunnable != null) {
       timerJobRunnable.stop();
     }
@@ -216,7 +221,7 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
     if (resetExpiredJobsRunnable != null) {
       resetExpiredJobsRunnable.stop();
     }
-    
+
     stopResetExpiredJobsThread();
     stopTimerAcquisitionThread();
     stopJobAcquisitionThread();
@@ -225,7 +230,7 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
     timerJobRunnable = null;
     asyncJobsDueRunnable = null;
     resetExpiredJobsRunnable = null;
-    
+
     isActive = false;
   }
 
@@ -245,10 +250,10 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
 
   protected void stopExecutingAsyncJobs() {
     if (executorService != null) {
-      
+
       // Ask the thread pool to finish and exit
       executorService.shutdown();
-  
+
       // Waits for 1 minute to finish all currently executing jobs
       try {
         if (!executorService.awaitTermination(secondsToWaitOnShutdown, TimeUnit.SECONDS)) {
@@ -257,7 +262,7 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
       } catch (InterruptedException e) {
         log.warn("Interrupted while shutting down the async job executor. ", e);
       }
-  
+
       executorService = null;
     }
   }
@@ -299,7 +304,7 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
       timerJobAcquisitionThread = null;
     }
   }
-  
+
   /** Starts the reset expired jobs thread */
   protected void startResetExpiredJobsThread() {
     if (resetExpiredJobThread == null) {
@@ -307,7 +312,7 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
     }
     resetExpiredJobThread.start();
   }
-  
+
   /** Stops the reset expired jobs thread */
   protected void stopResetExpiredJobsThread() {
     if (resetExpiredJobThread != null) {
@@ -316,7 +321,7 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
       } catch (InterruptedException e) {
         log.warn("Interrupted while waiting for the reset expired jobs thread to terminate", e);
       }
-  
+
       resetExpiredJobThread = null;
     }
   }
@@ -335,7 +340,7 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
     resetExpiredJobsPageSize = processEngineConfiguration.getAsyncExecutorResetExpiredJobsPageSize();
 
     secondsToWaitOnShutdown = processEngineConfiguration.getAsyncExecutorSecondsToWaitOnShutdown();
-    
+
     maxAsyncJobsDuePerAcquisition = processEngineConfiguration.getAsyncExecutorMaxAsyncJobsDuePerAcquisition();
     maxTimerJobsPerAcquisition = processEngineConfiguration.getAsyncExecutorMaxTimerJobsPerAcquisition();
 
@@ -365,7 +370,7 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
   }
 
   /* getters and setters */
-  
+
   public ProcessEngineConfigurationImpl getProcessEngineConfiguration() {
     return processEngineConfiguration;
   }
@@ -410,7 +415,7 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
   public boolean isActive() {
     return isActive;
   }
-  
+
   public boolean isMessageQueueMode() {
     return isMessageQueueMode;
   }
@@ -534,7 +539,7 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
   public void setTimerJobRunnable(AcquireTimerJobsRunnable timerJobRunnable) {
     this.timerJobRunnable = timerJobRunnable;
   }
-  
+
   public int getDefaultQueueSizeFullWaitTimeInMillis() {
     return defaultQueueSizeFullWaitTime;
   }
@@ -546,7 +551,7 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
   public void setAsyncJobsDueRunnable(AcquireAsyncJobsDueRunnable asyncJobsDueRunnable) {
     this.asyncJobsDueRunnable = asyncJobsDueRunnable;
   }
-  
+
   public void setResetExpiredJobsRunnable(ResetExpiredJobsRunnable resetExpiredJobsRunnable) {
     this.resetExpiredJobsRunnable = resetExpiredJobsRunnable;
   }
@@ -558,7 +563,7 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
 	public void setRetryWaitTimeInMillis(int retryWaitTimeInMillis) {
 		this.retryWaitTimeInMillis = retryWaitTimeInMillis;
 	}
-	
+
   public int getResetExpiredJobsInterval() {
     return resetExpiredJobsInterval;
   }
@@ -566,7 +571,7 @@ public class DefaultAsyncJobExecutor implements AsyncExecutor {
   public void setResetExpiredJobsInterval(int resetExpiredJobsInterval) {
     this.resetExpiredJobsInterval = resetExpiredJobsInterval;
   }
-  
+
   public int getResetExpiredJobsPageSize() {
     return resetExpiredJobsPageSize;
   }

@@ -1,9 +1,9 @@
 /* Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
  * <br>
  * The {@link #init()} method will try to build one {@link ProcessEngine} for each activiti.cfg.xml file found on the classpath. If you have more then one, make sure you specify different
  * process.engine.name values.
- * 
+ *
 
 
  */
@@ -65,6 +65,7 @@ public abstract class ProcessEngines {
   /**
    * Initializes all process engines that can be found on the classpath for resources <code>activiti.cfg.xml</code> (plain Activiti style configuration) and for resources
    * <code>activiti-context.xml</code> (Spring style configuration).
+   * 初始化所有配置在activiti.cfg.xml,activiti-context.xml中的工作流引擎。
    */
   public synchronized static void init() {
     if (!isInitialized()) {
@@ -111,6 +112,10 @@ public abstract class ProcessEngines {
     }
   }
 
+    /**
+     * 从spring配置文件中初始化工作流引擎
+     * @param resource
+     */
   protected static void initProcessEngineFromSpringResource(URL resource) {
     try {
       Class<?> springConfigurationHelperClass = ReflectUtil.loadClass("org.activiti.spring.SpringConfigurationHelper");
@@ -130,6 +135,7 @@ public abstract class ProcessEngines {
   /**
    * Registers the given process engine. No {@link ProcessEngineInfo} will be available for this process engine. An engine that is registered will be closed when the {@link ProcessEngines#destroy()}
    * is called.
+   * 注册工作流引擎
    */
   public static void registerProcessEngine(ProcessEngine processEngine) {
     processEngines.put(processEngine.getName(), processEngine);
@@ -137,11 +143,17 @@ public abstract class ProcessEngines {
 
   /**
    * Unregisters the given process engine.
+   * 取消注册工作流引擎
    */
   public static void unregister(ProcessEngine processEngine) {
     processEngines.remove(processEngine.getName());
   }
 
+    /**
+     * 从配置activities文件中初始化工作流引擎
+     * @param resourceUrl
+     * @return ProcessEngineInfo
+     */
   private static ProcessEngineInfo initProcessEngineFromResource(URL resourceUrl) {
     ProcessEngineInfo processEngineInfo = processEngineInfosByResourceUrl.get(resourceUrl.toString());
     // if there is an existing process engine info
@@ -214,7 +226,7 @@ public abstract class ProcessEngines {
 
   /**
    * obtain a process engine by name.
-   * 
+   *
    * @param processEngineName
    *          is the name of the process engine or null for the default process engine.
    */

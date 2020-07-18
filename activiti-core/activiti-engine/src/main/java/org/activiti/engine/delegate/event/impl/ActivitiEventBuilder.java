@@ -43,8 +43,7 @@ import org.activiti.engine.task.Task;
 
 /**
  * Builder class used to create {@link ActivitiEvent} implementations.
- *
-
+ * 构建类用于创建{@link ActivitiEvent} 的实现
  */
 public class ActivitiEventBuilder {
 

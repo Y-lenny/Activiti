@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
-
+ * 命令调用器拦截器【在拦截器最后通过他进行Command命令调用】
  */
 public class CommandInvoker extends AbstractCommandInterceptor {
 
@@ -31,14 +31,19 @@ public class CommandInvoker extends AbstractCommandInterceptor {
 
     // Execute the command.
     // This will produce operations that will be put on the agenda.
+    // 执行命令。这将会产生把操作事件放在这个agenda上面。
     commandContext.getAgenda().planOperation(new Runnable() {
       @Override
       public void run() {
+          /**
+           * 保存执行结果到栈结果集合中
+           */
         commandContext.setResult(command.execute(commandContext));
       }
     });
 
     // Run loop for agenda
+    // 循环 agenda
     executeOperations(commandContext);
 
     // At the end, call the execution tree change listeners.

@@ -61,6 +61,7 @@ public interface RuntimeService {
 
   /**
    * Starts a new process instance in the latest version of the process definition with the given key.
+   * 通过参数获取最新版本的流程定义进行创建一个新的流程实例。
    *
    * @param processDefinitionKey
    *          key of process definition, cannot be null.
@@ -75,6 +76,8 @@ public interface RuntimeService {
    * A business key can be provided to associate the process instance with a certain identifier that has a clear business meaning. For example in an order process, the business key could be an order
    * id. This business key can then be used to easily look up that process instance , see {@link ProcessInstanceQuery#processInstanceBusinessKey(String)}. Providing such a business key is definitely a
    * best practice.
+   * 通过使用一个具有明确含义的业务key进行与流程实例进行关联。例如订单流程，订单id就是业务key。这个业务key能够非常容易找到关联的业务实例，看{@link ProcessInstanceQuery#processInstanceBusinessKey(String)}.
+   * 通过业务key处理是一个非常好的实践。
    *
    * @param processDefinitionKey
    *          key of process definition, cannot be null.

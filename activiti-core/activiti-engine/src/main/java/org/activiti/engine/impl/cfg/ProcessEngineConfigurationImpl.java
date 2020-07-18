@@ -356,10 +356,13 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   private IntegrationContextService integrationContextService;
 
   // COMMAND EXECUTORS ////////////////////////////////////////////////////////
+  // 命令执行器
 
   protected CommandConfig defaultCommandConfig;
   protected CommandConfig schemaCommandConfig;
-
+    /**
+     * 命令调用器
+     */
   protected CommandInterceptor commandInvoker;
 
   /**
@@ -709,6 +712,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   protected String idGeneratorDataSourceJndiName;
 
   // BPMN PARSER //////////////////////////////////////////////////////////////
+  // BPMN 解析
 
   protected List<BpmnParseHandler> preBpmnParseHandlers;
   protected List<BpmnParseHandler> postBpmnParseHandlers;
@@ -759,11 +763,17 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
   protected String wsSyncFactoryClassName = DEFAULT_WS_SYNC_FACTORY;
   protected ConcurrentMap<QName, URL> wsOverridenEndpointAddresses = new ConcurrentHashMap<QName, URL>();
 
+    /**
+     * 命令上下文工厂
+     */
   protected CommandContextFactory commandContextFactory;
   protected TransactionContextFactory transactionContextFactory;
 
   protected Map<Object, Object> beans;
 
+    /**
+     * "用户代码"拦截器，连接activities与用户代码的入口【TaskListener,JavaDelegate,ActivityBehavior,Expression,ExcutionListener】
+     */
   protected DelegateInterceptor delegateInterceptor;
 
   protected Map<String, EventHandler> eventHandlers;
@@ -783,7 +793,6 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    * The following settings will determine the amount of entities loaded at once when the engine needs to load multiple entities (eg. when suspending a process definition with all its process
    * instances).
    *
-   * todo-lyw 2020/07/10 22:00:00  reader line
    *
    * The default setting is quite low, as not to surprise anyone with sudden memory spikes. Change it to something higher if the environment Activiti runs in allows it.
    * 这个默认设置是十分低的，为了避免由于突然内存激增引起问题；假如环境允许的情况下是可以适当的调大点。
@@ -942,6 +951,7 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
 
   // command executors
   // ////////////////////////////////////////////////////////
+  // 命令执行器
 
   public void initCommandExecutors() {
     initDefaultCommandConfig();
@@ -951,6 +961,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     initCommandExecutor();
   }
 
+    /**
+     *  初始化默认命令配置
+     */
   public void initDefaultCommandConfig() {
     if (defaultCommandConfig == null) {
       defaultCommandConfig = new CommandConfig();
@@ -973,6 +986,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     }
   }
 
+    /**
+     * 初始化命令拦截器
+     */
   public void initCommandInterceptors() {
     if (commandInterceptors == null) {
       commandInterceptors = new ArrayList<CommandInterceptor>();
@@ -983,6 +999,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
       if (customPostCommandInterceptors != null) {
         commandInterceptors.addAll(customPostCommandInterceptors);
       }
+        /**
+         * 命令调用器
+         */
       commandInterceptors.add(commandInvoker);
     }
   }
@@ -1007,6 +1026,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     return interceptors;
   }
 
+    /**
+     * 初始化命令执行器（把默认命令配置和命令过滤器列表同时赋值给到命令执行器）
+     */
   public void initCommandExecutor() {
     if (commandExecutor == null) {
       CommandInterceptor first = initInterceptorChain(commandInterceptors);
@@ -1014,6 +1036,11 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     }
   }
 
+    /**
+     * 初始化过滤器：过滤器组合链条并返回链条首位过滤器变量。
+     * @param chain
+     * @return CommandInterceptor
+     */
   public CommandInterceptor initInterceptorChain(List<CommandInterceptor> chain) {
     if (chain == null || chain.isEmpty()) {
       throw new ActivitiException("invalid command interceptor chain configuration: " + chain);
@@ -1039,6 +1066,10 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     initService(dynamicBpmnService);
   }
 
+    /**
+     *  初始化服务列表（把命令执行器和服务进行关联）
+     * @param service
+     */
   public void initService(Object service) {
     if (service instanceof ServiceImpl) {
       ((ServiceImpl) service).setCommandExecutor(commandExecutor);

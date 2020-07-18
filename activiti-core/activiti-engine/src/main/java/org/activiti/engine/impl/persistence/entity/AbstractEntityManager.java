@@ -96,6 +96,11 @@ public abstract class AbstractEntityManager<EntityImpl extends Entity> extends A
     }
   }
 
+    /**
+     * 获取数据管理器
+     * 模板方法设计模式
+     * @return
+     */
   protected abstract DataManager<EntityImpl> getDataManager();
 
   /* Execution related entity count methods */

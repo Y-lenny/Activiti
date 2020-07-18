@@ -1,9 +1,9 @@
 /* Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,6 +44,9 @@ public class ProcessEngineImpl implements ProcessEngine {
   protected TaskService taskService;
   protected ManagementService managementService;
   protected DynamicBpmnService dynamicBpmnService;
+    /**
+     * 异步执行器【处理job任务】
+     */
   protected AsyncExecutor asyncExecutor;
   protected CommandExecutor commandExecutor;
   protected Map<Class<?>, SessionFactory> sessionFactories;
@@ -77,13 +80,18 @@ public class ProcessEngineImpl implements ProcessEngine {
     ProcessEngines.registerProcessEngine(this);
 
     if (asyncExecutor != null && asyncExecutor.isAutoActivate()) {
+        /**
+         * 启动异步执行器
+         */
       asyncExecutor.start();
     }
 
     if (processEngineConfiguration.getProcessEngineLifecycleListener() != null) {
       processEngineConfiguration.getProcessEngineLifecycleListener().onProcessEngineBuilt(this);
     }
-
+      /**
+       * 分发引擎创建成功的事件
+       */
     processEngineConfiguration.getEventDispatcher().dispatchEvent(ActivitiEventBuilder.createGlobalEvent(ActivitiEventType.ENGINE_CREATED));
   }
 
@@ -98,7 +106,7 @@ public class ProcessEngineImpl implements ProcessEngine {
     if (processEngineConfiguration.getProcessEngineLifecycleListener() != null) {
       processEngineConfiguration.getProcessEngineLifecycleListener().onProcessEngineClosed(this);
     }
-    
+
     processEngineConfiguration.getEventDispatcher().dispatchEvent(ActivitiEventBuilder.createGlobalEvent(ActivitiEventType.ENGINE_CLOSED));
   }
 
