@@ -22,11 +22,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@EnableScheduling
+/**@EnableScheduling*/
+@RestController
 public class DemoApplication implements CommandLineRunner {
 
     private Logger logger = LoggerFactory.getLogger(DemoApplication.class);
@@ -62,8 +63,10 @@ public class DemoApplication implements CommandLineRunner {
 
     }
 
-    @Scheduled(initialDelay = 1000, fixedDelay = 5000)
-    public void processText() {
+    /**@Scheduled(initialDelay = 1000, fixedDelay = 5000)
+     * @return*/
+    @PostMapping("/process-text")
+    public ProcessInstance processText() {
 
         securityUtil.logInAs("system");
 
@@ -81,11 +84,13 @@ public class DemoApplication implements CommandLineRunner {
                 .build());
         logger.info(">>> Created Process Instance: " + processInstance);
 
-
+        return processInstance;
     }
 
-    @Scheduled(initialDelay = 1000, fixedDelay = 5000)
-    public void checkAndWorkOnTasksWhenAvailable() {
+    /**@Scheduled(initialDelay = 1000, fixedDelay = 5000)
+     * @return*/
+    @PostMapping("/work-task")
+    public Page<Task> checkAndWorkOnTasksWhenAvailable() {
         securityUtil.logInAs("bob");
 
         Page<Task> tasks = taskRuntime.tasks(Pageable.of(0, 10));
@@ -119,6 +124,7 @@ public class DemoApplication implements CommandLineRunner {
             logger.info("> There are no task for me to work on.");
         }
 
+        return tasks;
     }
 
 

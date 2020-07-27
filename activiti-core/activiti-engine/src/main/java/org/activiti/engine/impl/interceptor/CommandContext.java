@@ -104,6 +104,9 @@ public class CommandContext {
      * ？
      */
     protected ActivitiEngineAgenda agenda;
+    /**
+     * 执行实体
+     */
     protected Map<String, ExecutionEntity> involvedExecutions = new HashMap<>(1); // The executions involved with the command
     /**
      * 命名执行结果栈 ？ 为什么需要栈存储
@@ -123,7 +126,7 @@ public class CommandContext {
 
         // The intention of this method is that all resources are closed properly, even if exceptions occur
         // in close or flush methods of the sessions or the transaction context.
-
+        // 此方法的目的是即使在会话或事务上下文的关闭或刷新方法中发生了异常，也要正确关闭所有的资源。
         try {
             try {
                 try {
@@ -155,6 +158,7 @@ public class CommandContext {
                 exception(exception);
             } finally {
                 // Sessions need to be closed, regardless of exceptions/commit/rollback
+                // 会话需要被关闭，不管是异常/提交/回滚.
                 closeSessions();
             }
         } catch (Throwable exception) {

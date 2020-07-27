@@ -775,8 +775,13 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
      * "用户代码"拦截器，连接activities与用户代码的入口【TaskListener,JavaDelegate,ActivityBehavior,Expression,ExcutionListener】
      */
   protected DelegateInterceptor delegateInterceptor;
-
+    /**
+     * 事件处理器
+     */
   protected Map<String, EventHandler> eventHandlers;
+    /**
+     * 自定义事件处理器
+     */
   protected List<EventHandler> customEventHandlers;
 
   protected FailedJobCommandFactory failedJobCommandFactory;
@@ -803,9 +808,21 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
    */
   protected int batchSizeTasks = 25;
 
+    /**
+     * 事件分发器开启的状态
+     */
   protected boolean enableEventDispatcher = true;
+    /**
+     * 事件分发器
+     */
   protected ActivitiEventDispatcher eventDispatcher;
+    /**
+     * 事件监听器
+     */
   protected List<ActivitiEventListener> eventListeners;
+    /**
+     * 类型-事件监听器MAP
+     */
   protected Map<String, List<ActivitiEventListener>> typedEventListeners;
 
   // Event logging to database
@@ -2148,6 +2165,9 @@ public abstract class ProcessEngineConfigurationImpl extends ProcessEngineConfig
     }
   }
 
+    /**
+     * 初始化事件分发器并注入事件监听器
+     */
   public void initEventDispatcher() {
     if (this.eventDispatcher == null) {
       this.eventDispatcher = new ActivitiEventDispatcherImpl();

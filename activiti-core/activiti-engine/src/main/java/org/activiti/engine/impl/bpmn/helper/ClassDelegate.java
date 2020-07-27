@@ -1,9 +1,9 @@
 /* Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -52,18 +52,14 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Helper class for bpmn constructs that allow class delegation.
- * 
+ * 帮助构造bpmn中配置的class类对象。
  * This class will lazily instantiate the referenced classes when needed at runtime.
- * 
-
-
-
-
+ * 这个类会通过懒加载的形式去实例化在运行期间需要的的类。
  */
 public class ClassDelegate extends AbstractBpmnActivityBehavior implements TaskListener, ExecutionListener, TransactionDependentExecutionListener, TransactionDependentTaskListener, SubProcessActivityBehavior, CustomPropertiesResolver {
 
   private static final long serialVersionUID = 1L;
-  
+
   protected String serviceTaskId;
   protected String className;
   protected List<FieldDeclaration> fieldDeclarations;
@@ -101,6 +97,7 @@ public class ClassDelegate extends AbstractBpmnActivityBehavior implements TaskL
   }
 
   // Execution listener
+  // 执行监听器
   @Override
   public void notify(DelegateExecution execution) {
     if (executionListenerInstance == null) {
@@ -129,6 +126,7 @@ public class ClassDelegate extends AbstractBpmnActivityBehavior implements TaskL
   }
 
   // Task listener
+  // 任务时间监听
   @Override
   public void notify(DelegateTask delegateTask) {
     if (taskListenerInstance == null) {
@@ -212,7 +210,7 @@ public class ClassDelegate extends AbstractBpmnActivityBehavior implements TaskL
           }
         }
       }
-      
+
       if (activityBehaviorInstance == null) {
         activityBehaviorInstance = getActivityBehaviorInstance();
       }
@@ -311,7 +309,7 @@ public class ClassDelegate extends AbstractBpmnActivityBehavior implements TaskL
   public static void applyFieldDeclaration(List<FieldDeclaration> fieldDeclarations, Object target) {
     applyFieldDeclaration(fieldDeclarations, target, true);
   }
-  
+
   public static void applyFieldDeclaration(List<FieldDeclaration> fieldDeclarations, Object target, boolean throwExceptionOnMissingField) {
     if(fieldDeclarations != null) {
       for(FieldDeclaration declaration : fieldDeclarations) {
@@ -323,11 +321,11 @@ public class ClassDelegate extends AbstractBpmnActivityBehavior implements TaskL
   public static void applyFieldDeclaration(FieldDeclaration declaration, Object target) {
     applyFieldDeclaration(declaration, target, true);
   }
-  
+
   public static void applyFieldDeclaration(FieldDeclaration declaration, Object target, boolean throwExceptionOnMissingField) {
-    Method setterMethod = ReflectUtil.getSetter(declaration.getName(), 
+    Method setterMethod = ReflectUtil.getSetter(declaration.getName(),
       target.getClass(), declaration.getValue().getClass());
-    
+
     if(setterMethod != null) {
       try {
         setterMethod.invoke(target, declaration.getValue());
@@ -347,16 +345,16 @@ public class ClassDelegate extends AbstractBpmnActivityBehavior implements TaskL
           return;
         }
       }
-      
+
       // Check if the delegate field's type is correct
      if(!fieldTypeCompatible(declaration, field)) {
-       throw new ActivitiIllegalArgumentException("Incompatible type set on field declaration '" + declaration.getName() 
-          + "' for class " + target.getClass().getName() 
-          + ". Declared value has type " + declaration.getValue().getClass().getName() 
+       throw new ActivitiIllegalArgumentException("Incompatible type set on field declaration '" + declaration.getName()
+          + "' for class " + target.getClass().getName()
+          + ". Declared value has type " + declaration.getValue().getClass().getName()
           + ", while expecting " + field.getType().getName());
      }
      ReflectUtil.setField(field, target, declaration.getValue());
-     
+
     }
   }
 

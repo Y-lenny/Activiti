@@ -65,6 +65,9 @@ public class CommandContextInterceptor extends AbstractCommandInterceptor {
 
     } finally {
       try {
+          /**
+           * 不复用就关闭命令上下文（session tx等刷新到数据中）
+           */
         if (!contextReused) {
           context.close();
         }
