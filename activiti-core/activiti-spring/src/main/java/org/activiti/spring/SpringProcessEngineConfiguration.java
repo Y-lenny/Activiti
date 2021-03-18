@@ -1,9 +1,9 @@
 /* Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -89,6 +89,9 @@ public class SpringProcessEngineConfiguration extends ProcessEngineConfiguration
     this.transactionSynchronizationAdapterOrder = transactionSynchronizationAdapterOrder;
   }
 
+    /**
+     * 重写初始化默认的命令配置
+     */
   @Override
   public void initDefaultCommandConfig() {
     if (defaultCommandConfig == null) {
@@ -180,7 +183,7 @@ public class SpringProcessEngineConfiguration extends ProcessEngineConfiguration
   /**
    * Gets the {@link AutoDeploymentStrategy} for the provided mode. This method may be overridden to implement custom deployment strategies if required, but implementors should take care not to return
    * <code>null</code>.
-   * 
+   *
    * @param mode
    *          the mode to get the strategy for
    * @return the deployment strategy to use for the mode. Never <code>null</code>

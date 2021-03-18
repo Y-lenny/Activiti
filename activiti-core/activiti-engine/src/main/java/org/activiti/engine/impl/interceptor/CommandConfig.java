@@ -14,6 +14,9 @@ public class CommandConfig {
   private boolean contextReusePossible;
   private TransactionPropagation propagation;
 
+    /**
+     * 构造：重用命令上下文并且开启事务传播行为复用事务。
+     */
   public CommandConfig() {
     this.contextReusePossible = true;
     this.propagation = TransactionPropagation.REQUIRED;

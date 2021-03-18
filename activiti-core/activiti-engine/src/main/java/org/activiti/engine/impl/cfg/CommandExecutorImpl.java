@@ -7,9 +7,7 @@ import org.activiti.engine.impl.interceptor.CommandInterceptor;
 
 /**
  * Command executor that passes commands to the first interceptor in the chain. If no {@link CommandConfig} is passed, the default configuration will be used.
- * 
-
-
+ * 命令执行器会把命令传给拦截器链的第一个拦截器，假如没有传{@link CommandConfig}会使用默认配置的{@link ProcessEngineConfigurationImpl#defaultCommandConfig}defaultCommandConfig。
  */
 public class CommandExecutorImpl implements CommandExecutor {
 
@@ -24,7 +22,7 @@ public class CommandExecutorImpl implements CommandExecutor {
   public CommandInterceptor getFirst() {
     return first;
   }
-  
+
   public void setFirst(CommandInterceptor commandInterceptor) {
     this.first = commandInterceptor;
   }
