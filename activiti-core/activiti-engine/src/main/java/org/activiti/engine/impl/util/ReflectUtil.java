@@ -276,6 +276,7 @@ public abstract class ReflectUtil {
   private static Class loadClass(ClassLoader classLoader, String className) throws ClassNotFoundException {
     ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
     boolean useClassForName = processEngineConfiguration == null || processEngineConfiguration.isUseClassForNameClassLoading();
+    // Class.forName 与 classloader.loadClass 的区别：https://stackoverflow.com/questions/8100376/class-forname-vs-classloader-loadclass-which-to-use-for-dynamic-loading
     return useClassForName ? Class.forName(className, true, classLoader) : classLoader.loadClass(className);
   }
 

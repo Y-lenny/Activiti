@@ -22,7 +22,7 @@ import org.activiti.engine.impl.interceptor.CommandExecutor;
  * For each API call (and thus {@link Command}) being executed, a new agenda instance is created.
  * On this agenda, operations are put, which the {@link CommandExecutor} will keep executing until
  * all are executed.
- * 对于每个API调用（对应{@link Command}）执行时，一个新的agenda实例会被创建。在这个agenda实例上，{@link CommandExecutor}会一直执行知道执行完毕。
+ * 对于每个API调用（对应{@link Command}）执行时，一个新的agenda实例会被创建。在这个agenda实例上，{@link CommandExecutor}会一直执行直到执行完毕。
  *
  * The agenda also gives easy access to methods to plan new operations when writing
  * {@link ActivityBehavior} implementations.

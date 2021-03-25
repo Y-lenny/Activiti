@@ -109,7 +109,7 @@ public class CommandContext {
      */
     protected Map<String, ExecutionEntity> involvedExecutions = new HashMap<>(1); // The executions involved with the command
     /**
-     * 命名执行结果栈 ？ 为什么需要栈存储
+     * 命令执行结果栈 ？ 为什么需要栈存储
      */
     protected LinkedList<Object> resultStack = new LinkedList<>(); // needs to be a stack, as JavaDelegates can do api calls again
 

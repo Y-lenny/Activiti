@@ -18,7 +18,7 @@ import org.activiti.engine.api.internal.Internal;
 /**
  * Provides access to all the services that expose the BPM and workflow operations.
  *
- * 对外提供了访问BPM和工作流操作的业务接口
+ * 对外提供了工作流业务实现接口
  *
  * <ul>
  * <li>

@@ -193,7 +193,7 @@ public abstract class ProcessEngineConfiguration {
 
   protected ClassLoader classLoader;
   /**
-   * Either use Class.forName or ClassLoader.loadClass for class loading. See http://forums.activiti.org/content/reflectutilloadclass-and-custom- classloader
+   * Either use Class.forName or ClassLoader.loadClass for class loading. See http://forums.activiti.org/content/reflectutilloadclass-and-custom-classloader
    */
   protected boolean useClassForNameClassLoading = true;
   protected ProcessEngineLifecycleListener processEngineLifecycleListener;

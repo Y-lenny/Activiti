@@ -107,7 +107,7 @@ public class DbSqlSessionFactory implements SessionFactory {
 
   // insert, update and delete statements
   // /////////////////////////////////////
-  // 插入、更新、删除生命式语句
+  // 插入、更新、删除声明式语句
 
   public String getInsertStatement(Entity object) {
     return getStatement(object.getClass(), insertStatements, "insert");
