@@ -98,7 +98,7 @@ public class DemoApplication implements CommandLineRunner {
             for (Task t : tasks.getContent()) {
 
                 logger.info("> Claiming task: " + t.getId());
-                taskRuntime.claim(TaskPayloadBuilder.claim().withTaskId(t.getId()).build());
+                //taskRuntime.claim(TaskPayloadBuilder.claim().withTaskId(t.getId()).build());
 
                 List<VariableInstance> variables = taskRuntime.variables(TaskPayloadBuilder.variables().withTaskId(t.getId()).build());
                 VariableInstance variableInstance = variables.get(0);

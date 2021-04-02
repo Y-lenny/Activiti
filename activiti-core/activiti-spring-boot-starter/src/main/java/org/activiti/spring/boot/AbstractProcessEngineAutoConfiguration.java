@@ -1,9 +1,9 @@
 /* Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,6 +36,7 @@ import org.springframework.core.task.TaskExecutor;
 
 /**
  * Provides sane definitions for the various beans required to be productive with Activiti in Spring.
+ * 为了在Spring中能使用Activiti在这里定义了一系列必须的Bean
  *
  */
 public abstract class AbstractProcessEngineAutoConfiguration
@@ -45,8 +46,8 @@ public abstract class AbstractProcessEngineAutoConfiguration
   public SpringAsyncExecutor springAsyncExecutor(TaskExecutor applicationTaskExecutor) {
     return new SpringAsyncExecutor(applicationTaskExecutor, springRejectedJobsHandler());
   }
-  
-  @Bean 
+
+  @Bean
   public SpringRejectedJobsHandler springRejectedJobsHandler() {
     return new SpringCallerRunsRejectedJobsHandler();
   }
@@ -64,6 +65,11 @@ public abstract class AbstractProcessEngineAutoConfiguration
     return mybatisMappers;
   }
 
+    /**
+     * Activiti 引擎创建切入点
+     * @param configuration
+     * @return
+     */
   @Bean
   public ProcessEngineFactoryBean processEngine(SpringProcessEngineConfiguration configuration) {
     return super.springProcessEngineBean(configuration);

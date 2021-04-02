@@ -31,8 +31,15 @@
       </bpmn:sequenceFlow>
       <bpmn:sequenceFlow id="SequenceFlow_0upfncf" sourceRef="Task_1asxw87" targetRef="EndEvent_13bsqqd"/>
       <bpmn:sequenceFlow id="SequenceFlow_1nn2llw" sourceRef="Task_0snvh02" targetRef="EndEvent_1ogwwp9"/>
-      <bpmn:serviceTask activiti:exclusive="true" id="Task_0snvh02" implementation="tagTextConnector"
-                        name="Tag categorized Content"/>
+      <bpmn:serviceTask activiti:class="org.activiti.examples.JavaDelegateTest"
+                        activiti:exclusive="true"
+                        id="Task_0snvh02"
+                        implementation="tagTextConnector"
+                        name="Tag categorized Content">
+         <bpmn:extensionElements>
+            <activiti:executionListener class="org.activiti.examples.ExecutionListenerTest" event="start"/>
+         </bpmn:extensionElements>
+      </bpmn:serviceTask>
       <bpmn:serviceTask activiti:exclusive="true" id="Task_1asxw87"
                         implementation="discardTextConnector"
                         name="Discard and Notify user"/>
