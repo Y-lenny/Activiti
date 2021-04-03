@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-04-03T12:04:05.381Z" agent="5.0 (Macintosh; Intel Mac OS X 11_2_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36" etag="BpxCSsGbhn3CZFd5c4pw" version="14.5.6" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2021-04-03T13:59:15.824Z" agent="5.0 (Macintosh; Intel Mac OS X 11_2_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36" etag="5uMWT63jf0ZhVTA-KRcU" version="14.5.6" type="github" pages="2">
   <diagram name="引擎启动" id="c7558073-3199-34d8-9f00-42111426c3f3">
     <mxGraphModel dx="946" dy="1782" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" background="#CCCCCC" math="0" shadow="0">
       <root>
@@ -318,6 +318,11 @@
             <mxPoint x="825" y="-660" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-6" value="&lt;font color=&quot;#000000&quot;&gt;Command 传递&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=7;fontColor=#FFFFFF;" vertex="1" connectable="0" parent="9khUedJacCnCRmboT49n-9">
+          <mxGeometry x="-0.3333" y="-3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="9khUedJacCnCRmboT49n-11" value="CommandExecutor&amp;nbsp; 命令执行器&lt;br&gt;&amp;nbsp; &amp;nbsp; commandConfig&amp;nbsp; &amp;nbsp;命令配置&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; contextReuse&amp;nbsp; &amp;nbsp;上下文复用标识&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; propagation&amp;nbsp; &amp;nbsp; &amp;nbsp; 事务隔离级别&lt;br&gt;&amp;nbsp; &amp;nbsp; intercepter&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 拦截器(日志/事务)" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=7;strokeColor=#000000;fillColor=#ffffff;" vertex="1" parent="27StskpbhUAArwF32JLr-1">
           <mxGeometry x="490" y="-700" width="210" height="80" as="geometry" />
         </mxCell>
@@ -335,6 +340,21 @@
         <mxCell id="9khUedJacCnCRmboT49n-26" value="next" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=7;" vertex="1" connectable="0" parent="9khUedJacCnCRmboT49n-25">
           <mxGeometry x="-0.2" y="-2" relative="1" as="geometry">
             <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-17" value="&lt;b&gt;&lt;font color=&quot;#ff0000&quot;&gt;链路1&lt;/font&gt;&lt;/b&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=7;fontColor=#FFFFFF;" vertex="1" connectable="0" parent="9khUedJacCnCRmboT49n-25">
+          <mxGeometry x="-0.64" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#990000;fontSize=7;fontColor=#FFFFFF;" edge="1" parent="27StskpbhUAArwF32JLr-1" source="9khUedJacCnCRmboT49n-18" target="zscVWYkRdkxTxRTZ3AtT-26">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="660" y="-555" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-27" value="&lt;font color=&quot;#000000&quot;&gt;流程实例启动完成&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=7;fontColor=#FFFFFF;" vertex="1" connectable="0" parent="zscVWYkRdkxTxRTZ3AtT-25">
+          <mxGeometry x="0.0667" y="-3" relative="1" as="geometry">
+            <mxPoint y="-12" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="9khUedJacCnCRmboT49n-18" value="LogIntercepter.execute(config,commad)&#xa;next.execute(config,command)" style="whiteSpace=wrap;align=center;verticalAlign=middle;fontStyle=1;strokeWidth=3;fillColor=#3399FF;strokeColor=none;fontSize=7;" vertex="1" parent="27StskpbhUAArwF32JLr-1">
@@ -408,8 +428,86 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="9khUedJacCnCRmboT49n-39" value="CommandInvoker&#xa;把命令执行放到Agenda中" style="whiteSpace=wrap;align=center;verticalAlign=middle;fontStyle=1;strokeWidth=3;fillColor=#3399FF;strokeColor=none;fontSize=7;" vertex="1" parent="27StskpbhUAArwF32JLr-1">
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#990000;fontSize=7;fontColor=#FFFFFF;" edge="1" parent="27StskpbhUAArwF32JLr-1" source="9khUedJacCnCRmboT49n-39" target="zscVWYkRdkxTxRTZ3AtT-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-16" value="&lt;font color=&quot;#ff0000&quot;&gt;&lt;b&gt;链路2&lt;/b&gt;&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=7;fontColor=#FFFFFF;" vertex="1" connectable="0" parent="zscVWYkRdkxTxRTZ3AtT-5">
+          <mxGeometry x="0.2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9khUedJacCnCRmboT49n-39" value="CommandInvoker&#xa;1.把命令执行放到Agenda链表中&#xa;2. 遍历Agenda并执行" style="whiteSpace=wrap;align=center;verticalAlign=middle;fontStyle=1;strokeWidth=3;fillColor=#3399FF;strokeColor=none;fontSize=7;" vertex="1" parent="27StskpbhUAArwF32JLr-1">
           <mxGeometry x="720" y="-330" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-4" value="执行传递的Command.execute()" style="whiteSpace=wrap;align=center;verticalAlign=middle;fontStyle=1;strokeWidth=3;fillColor=#3399FF;strokeColor=none;fontSize=7;" vertex="1" parent="27StskpbhUAArwF32JLr-1">
+          <mxGeometry x="720" y="-270" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-7" value="&lt;font color=&quot;#000000&quot;&gt;获取Process&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#990000;fontSize=7;fontColor=#FFFFFF;" edge="1" parent="27StskpbhUAArwF32JLr-1" target="zscVWYkRdkxTxRTZ3AtT-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="825" y="-240" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-8" value="ProcessDefinitionUtil.getProcess&#xa;先查询缓存是否在缓存不存在解析DB" style="whiteSpace=wrap;align=center;verticalAlign=middle;fontStyle=1;strokeWidth=3;fillColor=#3399FF;strokeColor=none;fontSize=7;" vertex="1" parent="27StskpbhUAArwF32JLr-1">
+          <mxGeometry x="720" y="-210" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#990000;fontSize=7;fontColor=#FFFFFF;" edge="1" parent="27StskpbhUAArwF32JLr-1" target="zscVWYkRdkxTxRTZ3AtT-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="825" y="-180" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-10" value="createProcessInstanceWithInitialFlowElement&#xa;1. 创建ExecutionEntity&#xa;2. startProcessInstance(比较复杂)" style="whiteSpace=wrap;align=center;verticalAlign=middle;fontStyle=1;strokeWidth=3;fillColor=#3399FF;strokeColor=none;fontSize=7;" vertex="1" parent="27StskpbhUAArwF32JLr-1">
+          <mxGeometry x="720" y="-150" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#990000;fontSize=7;fontColor=#FFFFFF;" edge="1" parent="27StskpbhUAArwF32JLr-1" target="zscVWYkRdkxTxRTZ3AtT-12">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="825" y="-120" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#990000;fontSize=7;fontColor=#FFFFFF;" edge="1" parent="27StskpbhUAArwF32JLr-1" source="zscVWYkRdkxTxRTZ3AtT-12" target="9khUedJacCnCRmboT49n-39">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="-70" />
+              <mxPoint x="700" y="-315" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-14" value="&lt;font color=&quot;#000000&quot;&gt;循环执行：放入-&amp;gt;遍历-&amp;gt;执行&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=7;fontColor=#FFFFFF;" vertex="1" connectable="0" parent="zscVWYkRdkxTxRTZ3AtT-13">
+          <mxGeometry x="0.2421" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-18" value="&lt;b&gt;&lt;font color=&quot;#ff0000&quot;&gt;链路3&lt;/font&gt;&lt;/b&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=7;fontColor=#FFFFFF;" vertex="1" connectable="0" parent="zscVWYkRdkxTxRTZ3AtT-13">
+          <mxGeometry x="-0.0246" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-12" value="ProcessInstanceHelper.startProcessInstance&#xa;(commandContext.getAgenda().&#xa;planContinueProcessOperation(execution));" style="whiteSpace=wrap;align=center;verticalAlign=middle;fontStyle=1;strokeWidth=3;fillColor=#3399FF;strokeColor=none;fontSize=7;" vertex="1" parent="27StskpbhUAArwF32JLr-1">
+          <mxGeometry x="720" y="-90" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-19" value="" style="edgeStyle=elbowEdgeStyle;elbow=vertical;strokeColor=#990000;strokeWidth=2;fontSize=7;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="27StskpbhUAArwF32JLr-1" source="9khUedJacCnCRmboT49n-39" target="9khUedJacCnCRmboT49n-18">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="1030" y="-713" as="sourcePoint" />
+            <mxPoint x="1100" y="-713" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-20" value="&lt;font color=&quot;#ff0000&quot;&gt;链路4&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=7;fontStyle=1" vertex="1" connectable="0" parent="zscVWYkRdkxTxRTZ3AtT-19">
+          <mxGeometry x="-0.0571" y="3" relative="1" as="geometry">
+            <mxPoint x="3" y="79" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-23" value="&lt;font color=&quot;#000000&quot;&gt;flushSession&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=7;fontColor=#FFFFFF;" vertex="1" connectable="0" parent="zscVWYkRdkxTxRTZ3AtT-19">
+          <mxGeometry x="0.2667" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-24" value="&lt;span style=&quot;color: rgb(0 , 0 , 0)&quot;&gt;事务提交&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=7;fontColor=#FFFFFF;" vertex="1" connectable="0" parent="zscVWYkRdkxTxRTZ3AtT-19">
+          <mxGeometry x="0.819" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zscVWYkRdkxTxRTZ3AtT-26" value="End" style="ellipse;html=1;shape=startState;strokeColor=none;fillColor=#FF9933;fontSize=7;" vertex="1" parent="27StskpbhUAArwF32JLr-1">
+          <mxGeometry x="589" y="-570" width="30" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
