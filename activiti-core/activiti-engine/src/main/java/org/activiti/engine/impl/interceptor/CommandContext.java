@@ -91,7 +91,7 @@ public class CommandContext {
      */
     protected FailedJobCommandFactory failedJobCommandFactory;
     /**
-     * ？
+     * 命令上下文关闭事件监听器
      */
     protected List<CommandContextCloseListener> closeListeners;
     /**
@@ -101,11 +101,11 @@ public class CommandContext {
     protected boolean reused;
 
     /**
-     * ？
+     * 应办事项（执行计划）
      */
     protected ActivitiEngineAgenda agenda;
     /**
-     * 执行实体
+     * 执行实体和命令有关联
      */
     protected Map<String, ExecutionEntity> involvedExecutions = new HashMap<>(1); // The executions involved with the command
     /**

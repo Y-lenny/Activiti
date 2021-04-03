@@ -31,8 +31,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Operation that takes the current {@link FlowElement} set on the {@link ExecutionEntity}
  * and executes the associated {@link ActivityBehavior}. In the case of async, schedules a {@link Job}.
- * <p>
+ * <p> 这个操作目的是把当前的{@link FlowElement}放入到{@link ExecutionEntity}并且执行相关的{@link ActivityBehavior}。
  * Also makes sure the {@link ExecutionListener} instances are called.
+ * 也会确保这个{@link ExecutionListener}实例得到调用
  */
 public class ContinueProcessOperation extends AbstractOperation {
 

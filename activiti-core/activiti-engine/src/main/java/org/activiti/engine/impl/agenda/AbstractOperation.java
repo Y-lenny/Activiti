@@ -25,7 +25,7 @@ import org.activiti.engine.impl.util.ProcessDefinitionUtil;
 /**
  * Abstract superclass for all operation interfaces (which are {@link Runnable} instances),
  * exposing some shared helper methods and member fields to subclasses.
- *
+ * 抽象的父类接口针对所有的操作（operation）接口，暴露一些共享的方法和成员变量给子类
  * An operations is a {@link Runnable} instance that is put on the {@link Agenda} during
  * the execution of a {@link Command}.
  *
