@@ -12,9 +12,12 @@
  */
 package org.activiti.engine.delegate;
 
+import org.activiti.engine.impl.agenda.ContinueProcessOperation;
+
 /**
  * Callback interface to be notified of execution events like starting a process instance, ending an activity instance or taking a transition.
  * 当流程实例执行【开始、结束、连线】事件时会触发接口回调通知。
+ * {@link ContinueProcessOperation#executeProcessStartExecutionListeners()}
  */
 public interface ExecutionListener extends BaseExecutionListener {
 

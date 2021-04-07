@@ -44,7 +44,7 @@ public class CommandContextInterceptor extends AbstractCommandInterceptor {
     // rollback state, and some other command is being fired to compensate (eg. decrementing job retries)
     if (!config.isContextReusePossible() || context == null || context.getException() != null) {
       context = commandContextFactory.createCommandContext(command);
-    } else {
+    } else { // 嵌套Command才有可能存在上下文复用场景 ？？？
       log.debug("Valid context found. Reusing it for the current command '{}'", command.getClass().getCanonicalName());
       contextReused = true;
       context.setReused(true);
